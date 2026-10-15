@@ -1,70 +1,31 @@
-ROBOT PROGRAMMER MANAGER V6 — ONLINE
-====================================
+ROBOT PROGRAMMER MANAGER V5 — LOCAL EDITION
 
-This version changes the application from browser-only storage to a shared online database.
+This version does NOT use Supabase, cloud database, programmer login, or online synchronization.
 
-HOSTING
--------
-GitHub Pages hosts the frontend.
+LOCAL STORAGE OPTIONS
+1. Browser storage: every Save writes data to localStorage in the current browser profile.
+2. Local JSON file (Chrome/Edge desktop): open Backup / Restore, click “Create / Connect Data File”, and choose where to save ROBOT_PROGRAMMER_DATABASE.json. Once connected, Save writes the latest data to that file for the current session.
+3. Backup/Restore: use Download Backup to download a JSON copy, and Restore Backup to load it again on this or another device.
 
-DATABASE / LOGIN
-----------------
-Supabase provides:
-- PostgreSQL shared database
-- Email/password programmer login
-- Row Level Security
-- Realtime robot updates
-- Change history
+IMPORTANT LIMITATIONS
+- A browser website cannot automatically rewrite index.html or files inside your GitHub repository.
+- Browser localStorage is specific to that browser/profile/device. It does not automatically appear on another programmer's PC or phone.
+- The direct local-file connection may need to be selected again after reloading the page. Supported in modern desktop Chrome/Edge; if unavailable, use Download Backup / Restore Backup.
+- If opening via GitHub Pages, this is a local-only app; the website code is hosted online, but robot data is stored locally.
 
-IMPORTANT
----------
-Before publishing, edit:
-    supabase-config.js
+RUN
+Open index.html in a browser, or publish the files to GitHub Pages.
 
-Enter your Supabase project URL and PUBLISHABLE key.
-NEVER use the service_role/secret key in browser code.
 
-DATABASE SETUP
---------------
-Run:
-    supabase_schema.sql
+PORTABLE GITHUB ROBOT DATABASE
+------------------------------
+The project includes robots.json. On a fresh browser/device, the app loads robot records from this file if there is no existing local browser database.
 
-in the Supabase SQL Editor.
+To carry newly added robots with your GitHub project:
+1. Open the app and add/edit robot data.
+2. Go to Backup / Restore and click Download Backup (the file downloads as robots.json).
+3. In your project folder, replace the existing robots.json with the downloaded file.
+4. Commit and push the updated robots.json to GitHub along with your project.
+5. On another PC, download/reload the project. A fresh browser will load the saved robots.json.
 
-Then follow:
-    SETUP_SUPABASE.md
-
-MAIN V6 FEATURES
------------------
-- Shared robot database for all signed-in programmers
-- Realtime updates when another programmer changes a robot
-- Calibration process PDF
-- Calibration values + 9 MASTER COUNT rows
-- Digital Input: 10 rows, 5 columns
-- Digital Output: 10 rows, 5 columns
-- Universal Input: 10 rows, 5 columns
-- Universal Output: 10 rows, 5 columns
-- Ethernet configuration
-- Old Fanuc overhang generator
-- New Fanuc overhang generator
-- Aluminium panel diagram generator
-- Other robot/cell details
-- Local JSON backup/restore
-- V5 local-data upload to cloud
-- Responsive PC/mobile layout
-
-I/O TABLE FORMAT
-----------------
-1. SR.NO
-2. RANGE
-3. RACK
-4. SLOT
-5. START
-
-Each I/O section starts with 10 rows. The + ADD button can add extra rows if needed.
-
-DATA FLOW
----------
-Programmer A saves -> Supabase -> Realtime -> Programmer B sees the update.
-
-If the internet is temporarily unavailable, the current browser cache remains available.
+IMPORTANT: GitHub Pages is static hosting. The website cannot automatically update files in your GitHub repository. You must manually replace and upload/commit robots.json after exporting. Existing browser localStorage takes priority; on a PC that already has old local data, use Restore Backup or clear this site's browser data to load the project file.
